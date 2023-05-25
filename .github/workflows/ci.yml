@@ -26,8 +26,8 @@ jobs:
         env:
           CI: true
 
-  publish-to-github-packages:
-    name: Publish to Github Packages
+  publish-to-sonatype:
+    name: Publish to sonatype.org
     needs: [build-gradle]
     # Runs only in main
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
