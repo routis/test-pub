@@ -5,9 +5,15 @@ on:
   push:
     branches: ['**']
     tags: [v*]
+
+permissions:
+  contents: read
+
 jobs:
   build-gradle:
     name: Build
+    permissions:
+      pull-requests: write
     # Run on external PRs, but not on internal PRs since those will be run by push to branch
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on:  ubuntu-latest
@@ -25,6 +31,12 @@ jobs:
           arguments: build --full-stacktrace
         env:
           CI: true
+      - name: Prepare release notes
+        uses: release-drafter/release-drafter@v5
+        with:
+          config-name: release-drafter.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-to-sonatype:
     name: Publish to sonatype.org
