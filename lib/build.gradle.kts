@@ -7,13 +7,18 @@
  * This project uses @Incubating APIs which are subject to change.
  */
 
+group = "io.github.routis"
+version = "1.0-SNAPSHOT"
+
+extra["isReleaseVersion"] = !version.toString().endsWith("SNAPSHOT")
+
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.8.21"
 
-    // Apply the java-library plugin for API and implementation separation.
     `java-library`
-    
+    `maven-publish`
+    signing
 }
 
 repositories {
@@ -43,5 +48,65 @@ testing {
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
+        vendor.set(JvmVendorSpec.ADOPTIUM)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+        vendor.set(JvmVendorSpec.ADOPTIUM)
     }
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("library") {
+            from(components["java"])
+            pom {
+                name.set("Test Lib")
+                description.set("Playground for gradle and github actions")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://git@github.com:routis/test-pub.git")
+                    developerConnection.set("scm:git:ssh://git@github.com:routis/test-pub.git")
+                    url.set("https://github.com/routis/test-pub")
+                }
+            }
+        }
+    }
+    repositories {
+
+        val isSnapshot = version.toString().endsWith("SNAPSHOT")
+        maven {
+            val releasesRepoUrl = layout.buildDirectory.dir("repos/releases")
+            val snapshotsRepoUrl = layout.buildDirectory.dir("repos/snapshots")
+            url = uri(if (isSnapshot) snapshotsRepoUrl else releasesRepoUrl)
+
+        }
+    }
+}
+
+
+
+signing {
+    // require signing if we are building a release version and we are going to publish it.
+//    setRequired({
+//        (project.extra["isReleaseVersion"] as Boolean) && gradle.taskGraph.hasTask("publish")
+//    })
+    val signingKeyId: String? by project
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+    sign(publishing.publications["library"])
+}
+
+
+
