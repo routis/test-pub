@@ -8,7 +8,7 @@
  */
 
 group = "io.github.routis"
-version = "1.0-SNAPSHOT"
+version = "0.1.0-SNAPSHOT"
 
 extra["isReleaseVersion"] = !version.toString().endsWith("SNAPSHOT")
 
