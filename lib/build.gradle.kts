@@ -84,23 +84,21 @@ publishing {
     }
     repositories {
 
-        val isSnapshot = version.toString().endsWith("SNAPSHOT")
-        maven {
-            val releasesRepoUrl = layout.buildDirectory.dir("repos/releases")
-            val snapshotsRepoUrl = layout.buildDirectory.dir("repos/snapshots")
-            url = uri(if (isSnapshot) snapshotsRepoUrl else releasesRepoUrl)
+        val sonaUri =
+            if ((extra["isReleaseVersion"]) as  Boolean) "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            else "https://s01.oss.sonatype.org/content/repositories/snapshots/"
 
+        maven {
+            name = "sonatype"
+            url = uri(sonaUri)
+            credentials(PasswordCredentials::class)
         }
+
+
     }
 }
 
-
-
 signing {
-    // require signing if we are building a release version and we are going to publish it.
-//    setRequired({
-//        (project.extra["isReleaseVersion"] as Boolean) && gradle.taskGraph.hasTask("publish")
-//    })
     val signingKeyId: String? by project
     val signingKey: String? by project
     val signingPassword: String? by project
