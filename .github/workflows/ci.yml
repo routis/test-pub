@@ -23,6 +23,8 @@ jobs:
         with:
           gradle-version: wrapper
           arguments: build
+        env:
+          CI: true
 
   publish-to-github-packages:
     name: Publish to Github Packages
