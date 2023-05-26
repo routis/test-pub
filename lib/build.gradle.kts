@@ -15,6 +15,7 @@ extra["isReleaseVersion"] = !version.toString().endsWith("SNAPSHOT")
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.8.21"
+    id("com.diffplug.spotless") version "6.19.0"
 
     `java-library`
     `maven-publish`
@@ -61,6 +62,14 @@ kotlin {
     }
 }
 
+spotless {
+    kotlin {
+        ktlint("0.49.1")
+    }
+    kotlinGradle {
+        ktlint("0.49.1")
+    }
+}
 publishing {
     publications {
         create<MavenPublication>("library") {
@@ -85,16 +94,17 @@ publishing {
     repositories {
 
         val sonaUri =
-            if ((extra["isReleaseVersion"]) as  Boolean) "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            else "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            if ((extra["isReleaseVersion"]) as Boolean) {
+                "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            } else {
+                "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            }
 
         maven {
             name = "sonatype"
             url = uri(sonaUri)
             credentials(PasswordCredentials::class)
         }
-
-
     }
 }
 
@@ -105,6 +115,3 @@ signing {
     useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
     sign(publishing.publications["library"])
 }
-
-
-
