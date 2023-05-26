@@ -4,6 +4,7 @@
 package io.github.routis.testpub
 
 class Library {
+    // TEST 2
     fun someLibraryMethod(): Boolean {
         return true
     }
