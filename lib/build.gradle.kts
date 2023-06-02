@@ -88,7 +88,7 @@ publishing {
                     developerConnection.set("scm:git:ssh://git@github.com:routis/test-pub.git")
                     url.set("https://github.com/routis/test-pub")
                 }
-                developers{
+                developers {
                     developer {
                         organizationUrl.set("https://github.com/routis/")
                     }
