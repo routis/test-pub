@@ -77,6 +77,7 @@ publishing {
             pom {
                 name.set("Test Lib")
                 description.set("Playground for gradle and github actions")
+                url.set("https://github.com/routis/test-pub")
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
