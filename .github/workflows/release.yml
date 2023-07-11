@@ -10,13 +10,14 @@ on:
 jobs:
 
   log-input:
+    name: Log
     runs-on: ubuntu-latest
     steps:
       - run: |          
           echo "Tag: $TAG"
      
   checkout-tag:
-    name: Publish to sonatype.org    
+    name: Checkout passed tag
     runs-on: ubuntu-latest
     permissions:
       contents: read
