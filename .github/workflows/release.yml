@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |          
-          echo "Tag: $TAG"
+          echo "Tag: ${{ github.event.inputs.tag }}"
      
   checkout-tag:
     name: Checkout passed tag
