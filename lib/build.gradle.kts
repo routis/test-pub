@@ -15,7 +15,7 @@ extra["isReleaseVersion"] = !version.toString().endsWith("SNAPSHOT")
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.8.21"
-    id("com.diffplug.spotless") version "6.19.0"
+    id("com.diffplug.spotless") version "6.20.0"
 
     `java-library`
     `maven-publish`
