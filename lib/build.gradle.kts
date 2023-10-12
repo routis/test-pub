@@ -14,8 +14,8 @@ extra["isReleaseVersion"] = !version.toString().endsWith("SNAPSHOT")
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.8.21"
-    id("com.diffplug.spotless") version "6.19.0"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.spotless)
 
     `java-library`
     `maven-publish`
@@ -29,10 +29,10 @@ repositories {
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api("org.apache.commons:commons-math3:3.6.1")
+    api(libs.commons.math3)
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation("com.google.guava:guava:31.1-jre")
+    implementation(libs.guava)
 }
 
 testing {
@@ -40,7 +40,7 @@ testing {
         // Configure the built-in test suite
         val test by getting(JvmTestSuite::class) {
             // Use Kotlin Test test framework
-            useKotlinTest("1.8.21")
+            useKotlinTest(libs.versions.kotlin.get())
         }
     }
 }
@@ -63,11 +63,12 @@ kotlin {
 }
 
 spotless {
+    val ktlintVersion = libs.versions.ktlint.get()
     kotlin {
-        ktlint("0.49.1")
+        ktlint(ktlintVersion)
     }
     kotlinGradle {
-        ktlint("0.49.1")
+        ktlint(ktlintVersion)
     }
 }
 publishing {
