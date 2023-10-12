@@ -3,9 +3,13 @@
  */
 package io.github.routis.testpub
 
+/**
+ * A super useful library.
+ */
 class Library {
-    // TEST 2
-    fun someLibraryMethod(): Boolean {
-        return true
-    }
+
+    /**
+     * What does this method do? Is `true` or is it `false`?
+     */
+    fun someLibraryMethod(): Boolean = true
 }
