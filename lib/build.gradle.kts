@@ -48,18 +48,14 @@ testing {
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-        vendor.set(JvmVendorSpec.ADOPTIUM)
-    }
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.get())
     withSourcesJar()
     withJavadocJar()
 }
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-        vendor.set(JvmVendorSpec.ADOPTIUM)
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get()))
     }
 }
 
@@ -72,6 +68,7 @@ spotless {
         ktlint(ktlintVersion)
     }
 }
+
 publishing {
     publications {
         create<MavenPublication>("library") {
@@ -99,8 +96,8 @@ publishing {
             }
         }
     }
-    repositories {
 
+    repositories {
         val sonaUri =
             if ((extra["isReleaseVersion"]) as Boolean) {
                 "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
