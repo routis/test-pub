@@ -46,7 +46,7 @@ jobs:
       - name: Publish with Gradle Wrapper
         uses: gradle/gradle-build-action@v2.9.0
         with:
-          arguments: ./gradlew publishAllPublicationsToMavenCentral --no-configuration-cache
+          arguments: publishAllPublicationsToMavenCentral --no-configuration-cache
         env:
           CI: true
           GIT_REF_NAME: ${{ github.ref_name }}
