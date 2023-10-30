@@ -27,11 +27,10 @@ jobs:
         env:
           CI: true
 
-  publish-to-sonatype:
-    name: Publish to sonatype.org
-    needs: [build-gradle]
-    # Runs only in main
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+  publish-to-sonatype-snapshot:
+    name: Publish to sonatype.org (SNAPSHOT)
+    needs: [ build-gradle ]
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release')) &&  github.repository_owner == 'routis'
     runs-on: ubuntu-latest
     permissions:
       contents: read
