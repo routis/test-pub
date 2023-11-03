@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Debug
-        run: echo $(awk -F= '$1~/version/{print $2}' ./gradle.properties)
+        run: echo $(awk -F= '$1~/version/{print $2}' ${{ github.workspace }}/gradle.properties)
       - name: Extract
         run: echo "GRADLE_CODE_VERSION=$(echo awk -F= '$1~/version/{print $2}' ./gradle.properties)" >> $GITHUB_OUTPUT
 
