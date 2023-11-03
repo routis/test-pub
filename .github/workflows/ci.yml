@@ -29,6 +29,7 @@ jobs:
 
   extract-gradle-code-version:
     name: Extract Gradle Code Version
+    needs: [build-gradle]
     runs-on: ubuntu-latest
     steps:
       - name: Extract
@@ -36,8 +37,8 @@ jobs:
 
   publish-to-sonatype-snapshot:
     name: Publish to sonatype.org (SNAPSHOT)
-    needs: [ build-gradle ]
-    if: github.event_name != 'pull_request' && endsWith(env.GRADLE_CODE_VERSION, '-SNAPSHOT') && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release')) &&  github.repository_owner == 'routis'
+    needs: [ extract-gradle-code-version ]
+    if: github.event_name != 'pull_request' && endsWith( ${{ env.GRADLE_CODE_VERSION }}, '-SNAPSHOT') && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release')) &&  github.repository_owner == 'routis'
     runs-on: ubuntu-latest
     permissions:
       contents: read
