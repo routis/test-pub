@@ -27,10 +27,17 @@ jobs:
         env:
           CI: true
 
+  extract-gradle-code-version:
+    name: Extract Gradle Code Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract
+        run: echo "GRADLE_CODE_VERSION=$(echo awk -F= '$1~/version/{print $2}' ./gradle.properties)" >> $GITHUB_ENV
+
   publish-to-sonatype-snapshot:
     name: Publish to sonatype.org (SNAPSHOT)
     needs: [ build-gradle ]
-    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release')) &&  github.repository_owner == 'routis'
+    if: github.event_name != 'pull_request' && endsWith(env.GRADLE_CODE_VERSION, '-SNAPSHOT') && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release')) &&  github.repository_owner == 'routis'
     runs-on: ubuntu-latest
     permissions:
       contents: read
