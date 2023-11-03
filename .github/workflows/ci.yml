@@ -13,7 +13,7 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on:  ubuntu-latest
     outputs:
-      gradle-code-version: ${{ steps.gradle-code-version.outputs.GRADLE_CODE_VERSION }}
+      gradle-code-version: ${{ steps.extract.outputs.GRADLE_CODE_VERSION }}
     steps:
       - name: Checkout project sources
         uses: actions/checkout@v4
@@ -30,9 +30,11 @@ jobs:
           CI: true
       - name: Debug
         run: echo $(awk -F= '$1~/version/{print $2}' gradle.properties)
-      - id: gradle-code-version
+      - id: extract
         name: Extract
         run: echo "GRADLE_CODE_VERSION=$(echo awk -F= '$1~/version/{print $2}' gradle.properties)" >> $GITHUB_OUTPUT
+      - name: Debug
+        run: echo ${{ steps.extract.outputs }}
 
   publish-to-sonatype-snapshot:
     name: Publish to sonatype.org (SNAPSHOT)
