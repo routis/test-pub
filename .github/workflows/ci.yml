@@ -32,6 +32,8 @@ jobs:
     needs: [build-gradle]
     runs-on: ubuntu-latest
     steps:
+      - name: Debug
+        run: echo "GRADLE_CODE_VERSION=$(echo awk -F= '$1~/version/{print $2}' ./gradle.properties)"
       - name: Extract
         run: echo "GRADLE_CODE_VERSION=$(echo awk -F= '$1~/version/{print $2}' ./gradle.properties)" >> $GITHUB_OUTPUT
 
