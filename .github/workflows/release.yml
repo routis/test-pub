@@ -13,8 +13,12 @@ jobs:
       - name: Checkout project sources
         uses: actions/checkout@v4
       - id: extract
-        name: Extract code version from gradle properties
+        name: Extract code version from gradle.properties
         run: echo "CODE_VERSION=$(awk -F= '$1~/version/{print $2}' gradle.properties)" >> $GITHUB_OUTPUT
+      - name: Debug
+        run: echo 'v${{ steps.extract.outputs.CODE_VERSION }}'
+      - name: Debug
+        run: echo $GITHUB_REF_NAME
 
   publish-to-sonatype:
     name: Publish to sonatype.org
