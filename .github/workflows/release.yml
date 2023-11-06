@@ -16,12 +16,12 @@ jobs:
         name: Extract code version from gradle.properties
         run: echo "CODE_VERSION=$(awk -F= '$1~/version/{print $2}' gradle.properties)" >> $GITHUB_OUTPUT
       - name: Debug
-        run: echo 'v${{ needs.extract-code-version.outputs.code-version }}' == '${{ github.ref_name }}'
+        run: echo 'v${{ steps.extract.outputs.CODE_VERSION }}' == '${{ github.ref_name }}'
 
   publish-to-sonatype:
     name: Publish to sonatype.org
     needs: [ extract-code-version ]
-    if: github.repository_owner == 'routis' && startsWith(github.ref, 'refs/tags') && 'v${{ needs.extract-code-version.outputs.code-version }}' == '${{ github.ref_name }}'
+    if: github.repository_owner == 'routis' && startsWith(github.ref, 'refs/tags') && format('v{0}', needs.extract-code-version.outputs.code-version) == github.ref_name
     runs-on: ubuntu-latest
     permissions:
       contents: read
