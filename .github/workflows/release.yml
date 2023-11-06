@@ -16,9 +16,7 @@ jobs:
         name: Extract code version from gradle.properties
         run: echo "CODE_VERSION=$(awk -F= '$1~/version/{print $2}' gradle.properties)" >> $GITHUB_OUTPUT
       - name: Debug
-        run: echo 'v${{ steps.extract.outputs.CODE_VERSION }}'
-      - name: Debug
-        run: echo $GITHUB_REF_NAME
+        run: echo 'v${{ needs.extract-code-version.outputs.code-version }}' == '${{ github.ref_name }}'
 
   publish-to-sonatype:
     name: Publish to sonatype.org
