@@ -12,6 +12,8 @@ jobs:
     # Run on external PRs, but not on internal PRs since those will be run by push to branch
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on:  ubuntu-latest
+    outputs:
+      code-version: ${{ steps.extract.outputs.CODE_VERSION }}
     steps:
       - name: Checkout project sources
         uses: actions/checkout@v4
